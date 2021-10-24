@@ -1,4 +1,5 @@
 import re
+import datetime
 
 from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment
 
@@ -10,8 +11,8 @@ from .config import Config
 from .get_image import *
 
 keyword = on_regex(r"hso", priority=1)
-global_config = nonebot.get_driver().config
-plugin_config = Config(**global_config.dict())
+export = nonebot.require("nonebot_plugin_navicat")
+db = export.sqlite_pool
 
 
 @keyword.handle()
@@ -29,7 +30,8 @@ async def send_image(bot: Bot, event: MessageEvent):
             else:
                 await keyword.finish("要得太多了可不给发的喔(上限是十张)")
         else:
-            await get_local_image(1, "setu")
+            msg = await get_local_image(1, "setu")
+            await keyword.finish(msg)
     else:
         await keyword.finish(None)
 
