@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import nonebot
+from nonebot.adapters.cqhttp import Bot as CQHTTPBot
 from nonebot.adapters.mirai import Bot as MIRAIBot
-from nonebot.adapters.mirai import WebsocketBot
 
 # Custom your logger
 # 
@@ -19,10 +18,10 @@ nonebot.init()
 app = nonebot.get_asgi()
 
 driver = nonebot.get_driver()
-driver.register_adapter("mirai", WebsocketBot, qq=983107785)
+driver.register_adapter("cqhttp", CQHTTPBot)
+# driver.register_adapter("mirai", MIRAIBot)
 
-nonebot.load_plugins("qweather")
-# nonebot.load_builtin_plugins()
+nonebot.load_builtin_plugins()
 
 # Please DO NOT modify this file unless you know what you are doing!
 # As an alternative, you should use command `nb` or modify `pyproject.toml` to load plugins

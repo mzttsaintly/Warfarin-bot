@@ -2,8 +2,8 @@ import re
 
 import nonebot
 from nonebot.plugin import on_regex
-from nonebot.adapters.mirai import Bot, MessageEvent, MessageChain, MessageSegment
-from nonebot.log import logger
+from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment
+
 
 from .getweather import *
 
@@ -21,6 +21,6 @@ async def send_weather_message(bot: Bot, event: MessageEvent):
             city_name = str(n[1])
             logger.debug(city_name)
             msg = await now_weather(city_name)
-            await weather.finish(MessageSegment.plain(msg))
+            await weather.finish(msg)
         else:
             await weather.finish(None)
