@@ -21,7 +21,7 @@ driver = nonebot.get_driver()
 driver.register_adapter("cqhttp", CQHTTPBot)
 # driver.register_adapter("mirai", MIRAIBot)
 
-nonebot.load_plugin('nonebot_plugin_navicat')
+# nonebot.load_plugin('nonebot_plugin_navicat')
 nonebot.load_builtin_plugins()
 
 # Please DO NOT modify this file unless you know what you are doing!
