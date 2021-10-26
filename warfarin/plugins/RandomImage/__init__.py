@@ -1,9 +1,9 @@
 import re
 import datetime
 
-from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment, GroupMessageEvent, PrivateMessageEvent
+from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment, GroupMessageEvent
 
-from nonebot.plugin import on_regex, on_metaevent
+from nonebot.plugin import on_regex
 from .sqlite_image import *
 from .get_image import *
 
@@ -29,7 +29,7 @@ async def send_image(bot: Bot, event):
                     msg += await get_local_image(num, "setu")
                 await add_sqlite(event, msg)
                 await keyword.finish(msg)
-                await keyword.send(message="发完了")
+                # await keyword.send(message="发完了")
             else:
                 await keyword.finish("要得太多了可不给发的喔(上限是十张)")
         else:
@@ -48,12 +48,14 @@ async def get_local_image(num=1, kind="setu"):
 
 async def add_sqlite(event, msg):
     if isinstance(event, GroupMessageEvent):
-        await engine.add(Setu,
-                         {"Group_id": GroupMessageEvent.get_session_id(event),
-                          "user_id": int(MessageEvent.get_user_id(event)),
-                          "image": str(msg),
-                          "time": datetime.datetime.now()})
-        logger.debug("已添加群组信息进入数据库")
+        group_id = GroupMessageEvent.get_session_id(event)
+        if re.match(r"group_([0-9]*)?_", group_id):
+            await engine.add(Setu,
+                            {"Group_id": int(group_id[1]),
+                            "user_id": int(MessageEvent.get_user_id(event)),
+                            "image": str(msg),
+                            "time": datetime.datetime.now()})
+            logger.debug("已添加群组信息进入数据库")
     else:
         await engine.add(Setu,
                          {"Group_id": "0",
