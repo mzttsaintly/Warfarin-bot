@@ -26,7 +26,7 @@ async def send_image(bot: Bot, event):
             msg = None
             if 0 < num <= 10:
                 for i in range(num):
-                    msg += await get_local_image(num, "setu")
+                    msg += (await get_local_image(num, "setu") + "\n")
                 await add_sqlite(event, msg)
                 await keyword.finish(msg)
                 # await keyword.send(message="发完了")
@@ -48,13 +48,12 @@ async def get_local_image(num=1, kind="setu"):
 
 async def add_sqlite(event, msg):
     if isinstance(event, GroupMessageEvent):
-        group_id = GroupMessageEvent.get_session_id(event)
-        if re.match(r"group_([0-9]*)?_", group_id):
+        if group_id := re.match(r"group_([0-9]*)?_", GroupMessageEvent.get_session_id(event)):
             await engine.add(Setu,
-                            {"Group_id": int(group_id[1]),
-                            "user_id": int(MessageEvent.get_user_id(event)),
-                            "image": str(msg),
-                            "time": datetime.datetime.now()})
+                             {"Group_id": int(group_id[1]),
+                              "user_id": int(MessageEvent.get_user_id(event)),
+                              "image": str(msg),
+                              "time": datetime.datetime.now()})
             logger.debug("已添加群组信息进入数据库")
     else:
         await engine.add(Setu,

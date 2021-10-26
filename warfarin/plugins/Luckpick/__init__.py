@@ -2,22 +2,22 @@ import os
 import datetime
 import hashlib
 import json
-from typing import Set
+from typing import Type
 
+import nonebot
 from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment, GroupMessageEvent
 
 from nonebot.plugin import on_keyword
-from .sqlite_image import *
-from .get_image import *
+
 
 driver: nonebot.Driver = nonebot.get_driver()
 
-keyword = on_keyword(keywords=Set(["求签", "电子观音"]), priority=1)
+keyword = on_keyword(set("求签"), priority=1)
 
 
 @keyword.handle()
 async def sensojiluckpick(bot: Bot, event: MessageEvent):
-    "浅草寺求签，移植自獭爹bot"
+    """浅草寺求签，移植自獭爹bot"""
     qq_id = MessageEvent.get_user_id(event)
     random_num = await get_pape_num(qq_id)
     path = os.path.join(f"{os.getcwd()}", "warfarin", "plugins", "Luckpick", "Luck.json")
