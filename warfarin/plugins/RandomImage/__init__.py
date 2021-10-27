@@ -9,7 +9,7 @@ from .get_image import *
 
 driver: nonebot.Driver = nonebot.get_driver()
 
-keyword = on_regex(r"hso", priority=1)
+send_Setu = on_regex(r"hso", priority=1)
 
 
 @driver.on_startup
@@ -17,7 +17,7 @@ async def startup():
     await engine.create_all()
 
 
-@keyword.handle()
+@send_Setu.handle()
 async def send_image(bot: Bot, event):
     n = MessageEvent.get_plaintext(event)
     if n := re.match(r"hso[*=\s]?([0-9]*)?", n):
@@ -27,17 +27,17 @@ async def send_image(bot: Bot, event):
             if 0 < num <= 10:
                 for i in range(num):
                     msg += (await get_local_image(num, "setu") + "\n")
-                await add_sqlite(event, msg)
-                await keyword.finish(msg)
-                # await keyword.send(message="发完了")
+                await add_sqlite(event, Setu, msg)
+                await send_Setu.finish(msg)
+                # await send_Setu.send(message="发完了")
             else:
-                await keyword.finish("要得太多了可不给发的喔(上限是十张)")
+                await send_Setu.finish("要得太多了可不给发的喔(上限是十张)")
         else:
             msg = await get_local_image(1, "setu")
-            await add_sqlite(event, msg)
-            await keyword.finish(msg)
+            await add_sqlite(event, Setu, msg)
+            await send_Setu.finish(msg)
     else:
-        await keyword.finish(None)
+        await send_Setu.finish(None)
 
 
 async def get_local_image(num=1, kind="setu"):
@@ -46,19 +46,22 @@ async def get_local_image(num=1, kind="setu"):
     return MessageSegment.image(image)
 
 
-async def add_sqlite(event, msg):
+async def add_sqlite(event, db, msg):
+    msg_list = (str(msg)).split()
     if isinstance(event, GroupMessageEvent):
         if group_id := re.match(r"group_([0-9]*)?_", GroupMessageEvent.get_session_id(event)):
-            await engine.add(Setu,
-                             {"Group_id": int(group_id[1]),
-                              "user_id": int(MessageEvent.get_user_id(event)),
-                              "image": str(msg),
-                              "time": datetime.datetime.now()})
+            for i in msg_list:
+                await engine.add(db,
+                                {"Group_id": int(group_id[1]),
+                                "user_id": int(MessageEvent.get_user_id(event)),
+                                "image": i,
+                                "time": datetime.datetime.now()})
             logger.debug("已添加群组信息进入数据库")
     else:
-        await engine.add(Setu,
-                         {"Group_id": "0",
-                          "user_id": int(MessageEvent.get_user_id(event)),
-                          "image": str(msg),
-                          "time": datetime.datetime.now()})
+        for i in msg_list:
+            await engine.add(db,
+                            {"Group_id": "0",
+                            "user_id": int(MessageEvent.get_user_id(event)),
+                            "image": i,
+                            "time": datetime.datetime.now()})
         logger.debug("已添加私聊信息进入数据库")

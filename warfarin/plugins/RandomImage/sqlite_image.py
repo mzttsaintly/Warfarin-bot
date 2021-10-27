@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy import select, update, insert, delete
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -30,8 +31,13 @@ class AsyncORM(AsyncEngine):
         async with self.engine.begin() as conn:
             await conn.run_sync(self.Base.metadata.create_all)
 
+    async def drop_all(self):
+        """删除所有表"""
+        async with self.engine.begin() as conn:
+            await conn.run_sync(self.Base.metadata.drop_all)
+
     async def add(self, table, dt):
-        """插入"""
+        """添加信息"""
         async with self.async_session() as session:
             async with session.begin():
                 session.add(table(**dt), _warn=False)

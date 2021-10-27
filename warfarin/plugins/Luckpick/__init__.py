@@ -2,7 +2,6 @@ import os
 import datetime
 import hashlib
 import json
-from typing import Type
 
 import nonebot
 from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment, GroupMessageEvent
@@ -12,7 +11,7 @@ from nonebot.plugin import on_keyword
 
 driver: nonebot.Driver = nonebot.get_driver()
 
-keyword = on_keyword(set("求签"), priority=1)
+keyword = on_keyword(set(["求签", "电子观音"]), priority=1)
 
 
 @keyword.handle()
