@@ -1,11 +1,9 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy import select, update, insert, delete
+import nonebot
+import datetime
+from sqlalchemy import Column, Integer, String, DateTime, Time
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
-import nonebot
-
 
 driver: nonebot.Driver = nonebot.get_driver()
 config: nonebot.config.Config = driver.config
@@ -54,17 +52,6 @@ class Setu(Base):
     Group_id = Column(String(32))
     user_id = Column(Integer)
     image = Column(String(32))
-    time = Column(Integer)
+    type = Column(String(32))
+    time = Column(DateTime, default=datetime.datetime.now())
 
-# engine = AsyncORM(f"sqlite:///warfarin.db")
-# engine = create_engine(f"sqlite:///warfarin.db")
-# engine = create_engine(f"sqlite:///{config.sqlite_host}")
-# Setu.__table__.create(engine, checkfirst=True)
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
-#
-# new_setu = Setu(id=0, Group_id=0, user_id=1, image="test", time=datetime.datetime.now())
-# session.add(new_setu)
-#
-# session.commit()
-# session.close()
