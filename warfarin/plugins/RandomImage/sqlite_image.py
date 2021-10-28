@@ -4,6 +4,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Time
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import select, func
 
 driver: nonebot.Driver = nonebot.get_driver()
 config: nonebot.config.Config = driver.config
@@ -41,6 +42,11 @@ class AsyncORM(AsyncEngine):
                 session.add(table(**dt), _warn=False)
             await session.commit()
 
+    async def load_all(self, sql) -> list:
+        """查询信息
+        sql: 查询指令
+        例： engine.load_all(select(Setu.user_id, Setu.time).where(Setu.time > f"{datetime.date.today()}"))"""
+        return (await self.execute(sql)).fetchall()
 
 engine = AsyncORM(f"sqlite+aiosqlite:///{config.sqlite_host}")
 Base = engine.Base
