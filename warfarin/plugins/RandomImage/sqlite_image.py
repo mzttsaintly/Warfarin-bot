@@ -17,6 +17,16 @@ class AsyncEngine:
             echo=False
         )
 
+    async def execute(self, sql, **kwargs):
+        async with AsyncSession(self.engine) as session:
+            try:
+                result = await session.execute(sql, **kwargs)
+                await session.commit()
+                return result
+            except Exception as e:
+                await session.rollback()
+                raise e
+
 
 class AsyncORM(AsyncEngine):
     def __init__(self, conn):
@@ -42,11 +52,12 @@ class AsyncORM(AsyncEngine):
                 session.add(table(**dt), _warn=False)
             await session.commit()
 
-    async def load_all(self, sql) -> list:
+    async def load_all(self, sql):
         """查询信息
         sql: 查询指令
         例： engine.load_all(select(Setu.user_id, Setu.time).where(Setu.time > f"{datetime.date.today()}"))"""
         return (await self.execute(sql)).fetchall()
+
 
 engine = AsyncORM(f"sqlite+aiosqlite:///{config.sqlite_host}")
 Base = engine.Base
@@ -60,4 +71,3 @@ class Setu(Base):
     image = Column(String(32))
     type = Column(String(32))
     time = Column(DateTime, default=datetime.datetime.now())
-

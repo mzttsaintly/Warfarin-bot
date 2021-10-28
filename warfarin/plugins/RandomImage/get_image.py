@@ -1,6 +1,7 @@
 import random
 import os
-from pathlib import Path
+from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment, GroupMessageEvent
+
 
 import nonebot
 from .config import Config
@@ -42,3 +43,9 @@ async def get_image(kind="setu"):
         image_path = random_pic(base_path)
     logger.debug("image_path = " + image_path)
     return image_path
+
+
+async def get_local_image(num=1, kind="setu"):
+    image = await get_image(kind)
+    logger.debug("image = " + image)
+    return MessageSegment.image(image)

@@ -1,11 +1,8 @@
-import re
+from nonebot.plugin import on_regex
 
-from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment, GroupMessageEvent
-
-from nonebot.plugin import on_regex, on_command
-from .sqlite_image import *
 from .get_image import *
-# from .search_time import *
+from .on_time import *
+from .sqlite_image import *
 
 driver: nonebot.Driver = nonebot.get_driver()
 
@@ -41,12 +38,6 @@ async def send_image(bot: Bot, event):
         await send_Setu.finish(None)
 
 
-async def get_local_image(num=1, kind="setu"):
-    image = await get_image(kind)
-    logger.debug("image = " + image)
-    return MessageSegment.image(image)
-
-
 async def add_sqlite(event, db, msg, keyword):
     logger.debug("logging = " + str(msg))
     msg_list = re.findall(r"file=(.*?),cache=true", str(msg))
@@ -69,4 +60,3 @@ async def add_sqlite(event, db, msg, keyword):
                               "type": keyword
                               })
         logger.debug("已添加私聊信息进入数据库")
-# "time": datetime.datetime.now()
