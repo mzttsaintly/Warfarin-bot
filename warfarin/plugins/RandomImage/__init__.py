@@ -1,4 +1,5 @@
 from nonebot.plugin import on_regex
+from nonebot.adapters.cqhttp import Message, MessageEvent
 
 from .get_image import *
 from .on_time import *
@@ -7,6 +8,7 @@ from .sqlite_image import *
 driver: nonebot.Driver = nonebot.get_driver()
 
 send_Setu = on_regex(r"hso", priority=1)
+send_SFW = on_regex(r"sfw", priority=1)
 
 
 @driver.on_startup
@@ -14,24 +16,36 @@ async def startup():
     await engine.create_all()
 
 
+@send_SFW.handle()
 @send_Setu.handle()
 async def send_image(bot: Bot, event):
     n = MessageEvent.get_plaintext(event)
-    keyword = "setu"
-    if n := re.match(r"hso[*=\s]?([0-9]*)?", n):
-        if n[1]:
-            num = int(n[1])
-            msg = None
-            if 0 < num <= 10:
-                for i in range(num):
-                    msg += await get_local_image(num, keyword)
-                await add_sqlite(event, Setu, msg, keyword)
-                await send_Setu.finish(msg)
+    if setu_key := re.match(r"hso[*=\s]?([0-9]*)?", n):
+        keyword = "setu"
+        if setu_key[1]:
+            num = int(setu_key[1])
+            # msg = None
+            msg = await get_local_image(num, keyword)
+            await add_sqlite(event, Setu, msg, keyword)
+            await send_Setu.finish(msg)
                 # await send_Setu.send(message="发完了")
-            else:
-                await send_Setu.finish("要得太多了可不给发的喔(上限是十张)")
+            
         else:
-            msg = await get_local_image(1, "setu")
+            msg = await get_local_image(1, keyword)
+            await add_sqlite(event, Setu, msg, keyword)
+            await send_Setu.finish(msg)
+    elif girl_key := re.match(r"sfw[*=\s]?([0-9]*)?", n):
+        keyword = "wallpaper"
+        if n[1]:
+            num = int(girl_key[1])
+            # msg = None
+            msg = await get_local_image(num, keyword)
+            await add_sqlite(event, Setu, msg, keyword)
+            await send_Setu.finish(msg)
+                # await send_Setu.send(message="发完了")
+            
+        else:
+            msg = await get_local_image(1, keyword)
             await add_sqlite(event, Setu, msg, keyword)
             await send_Setu.finish(msg)
     else:

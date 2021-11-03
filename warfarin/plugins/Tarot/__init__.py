@@ -29,7 +29,8 @@ async def send_tarot(bot: Bot, event: MessageEvent):
 
 
 async def get_random_tarot():
-    path = f"{os.getcwd()}/warfarin/plugins/Tarot/resource/tarot.json"
+    # path = f"{os.getcwd()}/warfarin/plugins/Tarot/resource/tarot.json"
+    path = os.path.join(f"{os.getcwd()}", "warfarin", "plugins", "Tarot", "resource", "tarot.json")
     with open(path, 'r', encoding='utf-8') as json_file:
         data = json.load(json_file)
     kinds = ['major', 'pentacles', 'wands', 'cups', 'swords']
