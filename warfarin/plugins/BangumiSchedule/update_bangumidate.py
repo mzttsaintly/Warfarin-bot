@@ -3,14 +3,15 @@ import aiohttp
 import asyncio
 import json
 
+from aiohttp.client import TCPConnector
 
 BANGUMI_LIST = "https://cdn.jsdelivr.net/npm/bangumi-data@0.3/dist/data.json"
-
+# connector=TCPConnector(verify_ssl=False)
 
 async def get_json_bangumi():
     head = {
             "User-Agent": "Mozilla / 5.0(Windows NT 10.0; Win64; x64) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 80.0.3987.122  Safari / 537.36"}
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(connector=TCPConnector(verify_ssl=False)) as session:
         async with session.get(BANGUMI_LIST, headers=head) as res:
             dates = await res.json()
             # date = json.dumps(dates, ensure_ascii=False)
