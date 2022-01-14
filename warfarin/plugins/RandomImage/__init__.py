@@ -3,7 +3,8 @@ from nonebot.adapters.cqhttp import Message, MessageEvent
 
 from .get_image import *
 from .on_time import *
-from .sqlite_image import *
+# from .sqlite_image import *
+from orm.sqlite import *
 
 driver: nonebot.Driver = nonebot.get_driver()
 
