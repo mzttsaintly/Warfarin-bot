@@ -9,7 +9,7 @@ from orm.sqlite import *
 driver: nonebot.Driver = nonebot.get_driver()
 
 send_Setu = on_regex(r"hso", priority=1)
-send_SFW = on_regex(r"sfw", priority=1)
+# send_SFW = on_regex(r"sfw", priority=1)
 
 
 @driver.on_startup
@@ -17,10 +17,10 @@ async def startup():
     await engine.create_all()
 
 
-@send_SFW.handle()
+# @send_SFW.handle()
 @send_Setu.handle()
-async def send_image(bot: Bot, event):
-    n = Event.get_plaintext(event)
+async def send_image(bot: Bot, event: Event):
+    n = event.get_plaintext()
     if setu_key := re.match(r"hso[*=\s]?([0-9]*)?", n):
         keyword = "setu"
         if setu_key[1]:

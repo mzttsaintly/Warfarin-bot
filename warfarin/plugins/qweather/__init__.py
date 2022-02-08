@@ -13,7 +13,7 @@ weather = on_regex(r'(.*)天气$', priority=1)
 
 @weather.handle()
 async def send_weather_message(bot: Bot, event: Event):
-    n = Event.get_plaintext(event)
+    n = event.get_plaintext()
     logger.debug(n)
     if n := re.match(r'(.*)天气$', n, re.I):
         logger.debug(n)
