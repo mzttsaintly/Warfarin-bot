@@ -9,7 +9,7 @@ from orm.sqlite import *
 driver: nonebot.Driver = nonebot.get_driver()
 
 send_Setu = on_regex(r"hso", priority=1)
-# send_SFW = on_regex(r"sfw", priority=1)
+send_SFW = on_regex(r"sfw", priority=1)
 
 
 @driver.on_startup
@@ -17,7 +17,7 @@ async def startup():
     await engine.create_all()
 
 
-# @send_SFW.handle()
+@send_SFW.handle()
 @send_Setu.handle()
 async def send_image(bot: Bot, event: Event):
     n = event.get_plaintext()
@@ -25,16 +25,15 @@ async def send_image(bot: Bot, event: Event):
         keyword = "setu"
         if setu_key[1]:
             num = int(setu_key[1])
-            # msg = None
             msg = await get_local_image(num, keyword)
             # await add_sqlite(event, Setu, msg, keyword)
             await send_Setu.finish(msg)
-            # await send_Setu.send(message="发完了")
 
         else:
             msg = await get_local_image(1, keyword)
             # await add_sqlite(event, Setu, msg, keyword)
             await send_Setu.finish(msg)
+
     elif girl_key := re.match(r"sfw[*=\s]?([0-9]*)?", n):
         keyword = "wallpaper"
         if n[1]:
@@ -43,7 +42,6 @@ async def send_image(bot: Bot, event: Event):
             msg = await get_local_image(num, keyword)
             # await add_sqlite(event, Setu, msg, keyword)
             await send_Setu.finish(msg)
-            # await send_Setu.send(message="发完了")
 
         else:
             msg = await get_local_image(1, keyword)

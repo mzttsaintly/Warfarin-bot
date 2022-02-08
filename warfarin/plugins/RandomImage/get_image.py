@@ -45,11 +45,15 @@ async def get_image(kind="setu"):
 
 
 async def get_local_image(num=1, keyword="setu"):
-    msg = []
-    if 0 < num <= 10:
+    if 0 < num <= 1:
+        msg = []
         for i in range(num):
             # msg += await get_local_image(num, keyword)
-            msg.append(await get_image(keyword))
+            # image_path = "".join(await get_image(keyword))
+            msg.append(MessageSegment.image(path=await get_image(keyword)))
+
     else:
-        msg.append("要得太多了可不给发的喔(上限是十张)")
+        # msg = MessageSegment.plain("要得太多了可不给发的喔(上限是十张)")
+        msg = MessageSegment.plain("要得再多了也不会给你发的喔(上限是一张)")
+
     return msg
