@@ -11,6 +11,7 @@ url_weather_api = "https://devapi.qweather.com/v7/weather/"
 url_geoapi = "https://geoapi.qweather.com/v2/city/"
 logger.debug(apikey)
 
+
 # 获取城市ID
 async def get_Location(city_kw: str, api_type: str = "lookup") -> Tuple[str, Any, Any]:
     async with aiohttp.ClientSession() as session:

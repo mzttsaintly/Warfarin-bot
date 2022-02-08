@@ -2,7 +2,7 @@ import re
 
 import nonebot
 from nonebot.plugin import on_regex
-from nonebot.adapters.cqhttp import Bot, MessageEvent, MessageSegment
+from nonebot.adapters.mirai2 import Bot, Event, MessageSegment
 
 
 from .getweather import *
@@ -12,8 +12,8 @@ weather = on_regex(r'(.*)天气$', priority=1)
 
 
 @weather.handle()
-async def send_weather_message(bot: Bot, event: MessageEvent):
-    n = MessageEvent.get_plaintext(event)
+async def send_weather_message(bot: Bot, event: Event):
+    n = Event.get_plaintext(event)
     logger.debug(n)
     if n := re.match(r'(.*)天气$', n, re.I):
         logger.debug(n)

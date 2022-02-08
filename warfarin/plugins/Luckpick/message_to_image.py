@@ -7,16 +7,16 @@ import asyncio
 
 
 async def message_to_img(
-    message,
-    max_width: int = 1080,
-    font_size: int = 40,
-    spacing: int = 15,
-    padding_x: int = 20,
-    padding_y: int = 15,
-    img_fixed: bool = True,
-    font_path: str = os.path.join(os.getcwd(), "warfarin", "plugins", "Luckpick", "resource", "font.ttc")
+        message,
+        max_width: int = 1080,
+        font_size: int = 40,
+        spacing: int = 15,
+        padding_x: int = 20,
+        padding_y: int = 15,
+        img_fixed: bool = True,
+        font_path: str = os.path.join(os.getcwd(), "warfarin", "plugins", "Luckpick", "resource", "font.ttc")
 ):
-    ''' Args:
+    """ Args:
             message: 要转换的文字
             max_width: 最大长度
             font_size: 字体尺寸
@@ -27,16 +27,17 @@ async def message_to_img(
             font_path: 字体文件路径
         Examples:
             msg = await messagechain_to_img(message=message)
-    '''
+    """
+
     def get_final_text_lines(text: str, text_width: int, font: ImageFont.FreeTypeFont) -> int:
-            lines = text.split("\n")
-            line_count = 0
-            for line in lines:
-                if not line:
-                    line_count += 1
-                    continue
-                line_count += int(math.ceil(float(font.getsize(line)[0]) / float(text_width)))
-            return line_count + 1
+        lines = text.split("\n")
+        line_count = 0
+        for line in lines:
+            if not line:
+                line_count += 1
+                continue
+            line_count += int(math.ceil(float(font.getsize(line)[0]) / float(text_width)))
+        return line_count + 1
 
     font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
     plains = message
@@ -48,12 +49,10 @@ async def message_to_img(
     picture = IMG.new('RGB', (final_width, final_height), (255, 255, 255))
     draw = ImageDraw.Draw(picture)
     present_x = padding_x
-    persent_y =padding_y
-    draw.text((padding_x, padding_y), plains, font=font, fill=(0,0,0))
+    persent_y = padding_y
+    draw.text((padding_x, padding_y), plains, font=font, fill=(0, 0, 0))
     bytes_io = BytesIO()
     picture.save(bytes_io, format="PNG")
-    
-
 
 
 if __name__ == "__main__":
@@ -65,4 +64,4 @@ if __name__ == "__main__":
 #     font = ImageFont.truetype((os.path.dirname(__file__) + "/resource/font.ttc"), 18)
 #     dr.text((10, 5), text,font=font, fill="#000000")
 #     im.show()
-    # im.save(os.path.dirname(__file__) + "/resource/out_put.png")
+# im.save(os.path.dirname(__file__) + "/resource/out_put.png")

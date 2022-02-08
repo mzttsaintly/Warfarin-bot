@@ -4,7 +4,7 @@ import json
 import os
 
 import nonebot
-from nonebot.adapters.cqhttp import Bot, MessageEvent
+from nonebot.adapters.mirai2 import Bot, MessageSegment, Event
 from nonebot.plugin import on_keyword
 
 driver: nonebot.Driver = nonebot.get_driver()
@@ -13,9 +13,9 @@ keyword = on_keyword({"求签", "电子观音"}, priority=1)
 
 
 @keyword.handle()
-async def sensojiluckpick(bot: Bot, event: MessageEvent):
+async def sensojiluckpick(bot: Bot, event: Event):
     """浅草寺求签，移植自獭爹bot"""
-    qq_id = MessageEvent.get_user_id(event)
+    qq_id = Event.get_user_id(event)
     random_num = await get_pape_num(qq_id)
     path = os.path.join(f"{os.getcwd()}", "warfarin", "plugins", "Luckpick", "Luck.json")
     with open(path, 'r', encoding='utf-8') as luck_data:

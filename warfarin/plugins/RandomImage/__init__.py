@@ -1,5 +1,5 @@
 from nonebot.plugin import on_regex
-from nonebot.adapters.cqhttp import Message, MessageEvent
+from nonebot.adapters.mirai2 import MessageSegment, Bot, Event
 
 from .get_image import *
 from .on_time import *
@@ -20,20 +20,20 @@ async def startup():
 @send_SFW.handle()
 @send_Setu.handle()
 async def send_image(bot: Bot, event):
-    n = MessageEvent.get_plaintext(event)
+    n = Event.get_plaintext(event)
     if setu_key := re.match(r"hso[*=\s]?([0-9]*)?", n):
         keyword = "setu"
         if setu_key[1]:
             num = int(setu_key[1])
             # msg = None
             msg = await get_local_image(num, keyword)
-            await add_sqlite(event, Setu, msg, keyword)
+            # await add_sqlite(event, Setu, msg, keyword)
             await send_Setu.finish(msg)
-                # await send_Setu.send(message="发完了")
-            
+            # await send_Setu.send(message="发完了")
+
         else:
             msg = await get_local_image(1, keyword)
-            await add_sqlite(event, Setu, msg, keyword)
+            # await add_sqlite(event, Setu, msg, keyword)
             await send_Setu.finish(msg)
     elif girl_key := re.match(r"sfw[*=\s]?([0-9]*)?", n):
         keyword = "wallpaper"
@@ -41,37 +41,37 @@ async def send_image(bot: Bot, event):
             num = int(girl_key[1])
             # msg = None
             msg = await get_local_image(num, keyword)
-            await add_sqlite(event, Setu, msg, keyword)
+            # await add_sqlite(event, Setu, msg, keyword)
             await send_Setu.finish(msg)
-                # await send_Setu.send(message="发完了")
-            
+            # await send_Setu.send(message="发完了")
+
         else:
             msg = await get_local_image(1, keyword)
-            await add_sqlite(event, Setu, msg, keyword)
+            # await add_sqlite(event, Setu, msg, keyword)
             await send_Setu.finish(msg)
     else:
         await send_Setu.finish(None)
 
 
-async def add_sqlite(event, db, msg, keyword):
-    logger.debug("logging = " + str(msg))
-    msg_list = re.findall(r"file=(.*?),cache=true", str(msg))
-    if isinstance(event, GroupMessageEvent):
-        if group_id := re.match(r"group_([0-9]*)?_", GroupMessageEvent.get_session_id(event)):
-            for i in msg_list:
-                await engine.add(db,
-                                 {"Group_id": int(group_id[1]),
-                                  "user_id": int(MessageEvent.get_user_id(event)),
-                                  "image": i,
-                                  "type": keyword
-                                  })
-            logger.debug("已添加群组信息进入数据库")
-    else:
-        for i in msg_list:
-            await engine.add(db,
-                             {"Group_id": "0",
-                              "user_id": int(MessageEvent.get_user_id(event)),
-                              "image": i,
-                              "type": keyword
-                              })
-        logger.debug("已添加私聊信息进入数据库")
+# async def add_sqlite(event, db, msg, keyword):
+#     logger.debug("logging = " + str(msg))
+#     msg_list = re.findall(r"file=(.*?),cache=true", str(msg))
+#     if isinstance(event, GroupMessageEvent):
+#         if group_id := re.match(r"group_([0-9]*)?_", GroupMessageEvent.get_session_id(event)):
+#             for i in msg_list:
+#                 await engine.add(db,
+#                                  {"Group_id": int(group_id[1]),
+#                                   "user_id": int(MessageEvent.get_user_id(event)),
+#                                   "image": i,
+#                                   "type": keyword
+#                                   })
+#             logger.debug("已添加群组信息进入数据库")
+#     else:
+#         for i in msg_list:
+#             await engine.add(db,
+#                              {"Group_id": "0",
+#                               "user_id": int(MessageEvent.get_user_id(event)),
+#                               "image": i,
+#                               "type": keyword
+#                               })
+#         logger.debug("已添加私聊信息进入数据库")

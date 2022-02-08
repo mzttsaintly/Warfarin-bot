@@ -1,6 +1,6 @@
 import datetime
 import re
-from nonebot.adapters.cqhttp import Bot, GroupMessageEvent
+from nonebot.adapters.mirai2 import Bot, Event
 from nonebot import on_command, logger, require, get_bot
 from sqlalchemy.sql.expression import select, and_
 from .sqlite_image import engine, Setu
@@ -26,8 +26,8 @@ async def search_sqlite_in_table_by_where(table_and_column, search_equation):
 
 @send_count.handle()
 async def count_image_one_day(bot: Bot, event):
-    if isinstance(event, GroupMessageEvent):
-        group_ids = re.match(r"group_([0-9]*)?_", GroupMessageEvent.get_session_id(event))
+    if isinstance(event, Event):
+        group_ids = re.match(r"group_([0-9]*)?_", Event.get_session_id(event))
         group_id = group_ids[1]
     else:
         group_id = "0"

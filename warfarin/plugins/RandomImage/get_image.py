@@ -1,7 +1,6 @@
 import random
 import os
-from nonebot.adapters.cqhttp import Bot, Message, MessageSegment, GroupMessageEvent
-
+from nonebot.adapters.mirai2 import Bot, Event, MessageSegment, MessageChain
 
 import nonebot
 from .config import Config
@@ -46,11 +45,11 @@ async def get_image(kind="setu"):
 
 
 async def get_local_image(num=1, keyword="setu"):
-    msg = Message()
+    msg = []
     if 0 < num <= 10:
-                for i in range(num):
-                    # msg += await get_local_image(num, keyword)
-                    msg.append(await get_image(keyword))
+        for i in range(num):
+            # msg += await get_local_image(num, keyword)
+            msg.append(await get_image(keyword))
     else:
         msg.append("要得太多了可不给发的喔(上限是十张)")
     return msg
