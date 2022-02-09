@@ -31,14 +31,14 @@ async def get_image(kind="setu"):
         choice_kinds = random.choice(['setu', 'real', 'wallpaper'])
     image_path = f"{os.getcwd()}/error/path_not_exists.png"
     if choice_kinds == 'setu':
-        base_path = setuPath + "\\"
+        base_path = setuPath + os.sep
         logger.debug("setuPath = " + str(base_path))
         image_path = random_pic(base_path)
     if choice_kinds == 'real':
-        base_path = realPath + "\\"
+        base_path = realPath + os.sep
         image_path = random_pic(base_path)
     if choice_kinds == 'wallpaper':
-        base_path = wallpaperPath + "\\"
+        base_path = wallpaperPath + os.sep
         image_path = random_pic(base_path)
     logger.debug("image_path = " + image_path)
     return image_path
