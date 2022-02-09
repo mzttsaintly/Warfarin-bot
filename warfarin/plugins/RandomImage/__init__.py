@@ -2,8 +2,8 @@ from nonebot.plugin import on_regex
 from nonebot.adapters.mirai2 import MessageSegment, Bot, Event
 
 from .get_image import *
-from .on_time import *
-# from .sqlite_image import *
+# from .on_time import *
+from orm.sqlite import engine
 from orm.sqlite import *
 
 driver: nonebot.Driver = nonebot.get_driver()
