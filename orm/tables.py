@@ -7,7 +7,7 @@ from .sqlite import Base
 class Setu(Base):
     __tablename__ = "setu"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    Group_id = Column(String(32))
+    Group_id = Column(Integer)
     user_id = Column(Integer)
     image = Column(String(32))
     type = Column(String(32))

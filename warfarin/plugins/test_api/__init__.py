@@ -23,3 +23,8 @@ async def testapi(bot: Bot, event: Event):
 
     session_id = event.get_session_id()
     logger.debug(f"session_id = {session_id}")
+
+    message_type = event.get_type()
+    logger.debug(f"message_type = {message_type}")
+
+    await test_message.finish(None)

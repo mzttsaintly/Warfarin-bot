@@ -2,6 +2,7 @@
 
 import nonebot
 from nonebot.adapters.mirai2 import Adapter as MIRAI2Adapter
+# from nonebot.adapters.onebot import V11Adapter as OneBot
 
 # Custom your logger
 # 
@@ -18,6 +19,7 @@ app = nonebot.get_asgi()
 
 driver = nonebot.get_driver()
 driver.register_adapter(MIRAI2Adapter)
+# driver.register_adapter(OneBot)
 
 # nonebot.load_plugin('nonebot_plugin_navicat')
 # nonebot.load_builtin_plugins()
@@ -25,6 +27,7 @@ driver.register_adapter(MIRAI2Adapter)
 # Please DO NOT modify this file unless you know what you are doing!
 # As an alternative, you should use command `nb` or modify `pyproject.toml` to load plugins
 nonebot.load_from_toml("pyproject.toml")
+# nonebot.load_plugin("nonebot_plugin_test")
 
 # Modify some config / config depends on loaded configs
 # 
