@@ -12,3 +12,16 @@ class Setu(Base):
     image = Column(String(32))
     type = Column(String(32))
     time = Column(DateTime, default=datetime.datetime.now())
+
+
+class ImageInformation(Base):
+    __table_args__ = {'extend_existing': True}
+    __tablename__ = "image_information"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    img_name = Column(String(32))
+    path_name = Column(String(32))
+    character = Column(String(32))
+    title = Column(String(32))
+    hair = Column(String(32))
+    tags = Column(String(32))
+    ero = Column(Integer)
