@@ -1,7 +1,7 @@
 from nonebot import logger, on_message
 from nonebot.adapters.mirai2 import MessageSegment, Bot, Event
 
-test_message = on_message(priority=1)
+test_message = on_message(priority=5)
 
 
 @test_message.handle()

@@ -121,6 +121,7 @@ venv.bak/
 /.idea/
 
 warfarin.db
+/data
 
 # Spyder project settings
 .spyderproject

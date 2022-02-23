@@ -1,8 +1,9 @@
 from typing import Any, Tuple
-
+from txt2img.txt2img import Txt2Img
 import aiohttp
 import nonebot
 from nonebot.log import logger
+from nonebot.adapters.mirai2 import MessageSegment
 
 apikey = nonebot.get_driver().config.qweather_apikey
 if not apikey:
@@ -39,7 +40,7 @@ async def get_WeatherInfo(city_name: str, keyword="now"):
         return code, city_name
 
 
-async def now_weather(city_name: str, keyword: str = "now") -> str:
+async def now_weather(city_name: str, keyword: str = "now", t2i=True) -> str:
     data, city_name = await get_WeatherInfo(city_name, keyword)
     if data["code"] == "200":
         now = data["now"]
@@ -50,6 +51,15 @@ async def now_weather(city_name: str, keyword: str = "now") -> str:
                        now["windSpeed"], now["humidity"], now["cloud"], now["vis"], now["pressure"]), "数据来源：和风天气\n",
                    "数据更新时间：%s\n" % data["updateTime"], "链接：%s" % data["fxLink"]]
         content = "".join(message)
-        return content
+        if t2i:
+            font_size = 32
+            title = f"{city_name}天气"
+            text = content
+            img = Txt2Img(font_size)
+            pic = img.save(title, text)
+            res = MessageSegment.image(base64=pic)
+        else:
+            res = content
+        return res
     else:
         return "错误代码：%s" % data["code"]

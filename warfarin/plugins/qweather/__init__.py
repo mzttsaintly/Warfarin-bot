@@ -8,11 +8,11 @@ from nonebot.adapters.mirai2 import Bot, Event, MessageSegment
 from .getweather import *
 
 
-weather = on_regex(r'(.*)天气$', priority=1)
+weather = on_regex(r'(.*)天气$', priority=4)
 
 
 @weather.handle()
-async def send_weather_message(bot: Bot, event: Event):
+async def send_weather_message(event: Event):
     n = event.get_plaintext()
     logger.debug(n)
     if n := re.match(r'(.*)天气$', n, re.I):
