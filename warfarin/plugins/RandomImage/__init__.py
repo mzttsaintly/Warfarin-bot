@@ -1,4 +1,5 @@
 import re
+from nonebot import require
 from nonebot.plugin import on_regex
 from nonebot.adapters.mirai2 import MessageSegment, Bot, Event
 
@@ -11,8 +12,10 @@ driver: nonebot.Driver = nonebot.get_driver()
 
 send_Setu = on_regex(r"hso", priority=1)
 send_SFW = on_regex(r"sfw", priority=1)
+scheduler = require("nonebot_plugin_apscheduler").scheduler
 
 
+@scheduler.scheduled_job("cron", minute="10", hour="23", day="*", id="setu")
 @driver.on_startup
 async def startup():
     await engine.create_all()

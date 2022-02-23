@@ -1,7 +1,11 @@
 import nonebot
+from sqlalchemy import func
+from sqlalchemy import update, insert, delete
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql.expression import select
 
 driver: nonebot.Driver = nonebot.get_driver()
 config: nonebot.config.Config = driver.config
@@ -23,6 +27,28 @@ class AsyncEngine:
             except Exception as e:
                 await session.rollback()
                 raise e
+
+    async def fetchall(self, sql):
+        return (await self.execute(sql)).fetchall()
+
+    async def fetchone(self, sql):
+        # self.warning(sql)
+        result = await self.execute(sql)
+        one = result.fetchone()
+        if one:
+            return one
+        else:
+            return None
+
+    async def fetchone_dt(self, sql, n=999999):
+        # self.warning(sql)
+        result = await self.execute(sql)
+        columns = result.keys()
+        length = len(columns)
+        for _ in range(n):
+            one = result.fetchone()
+            if one:
+                yield {columns[i]: one[i] for i in range(length)}
 
 
 class AsyncORM(AsyncEngine):
@@ -106,6 +132,6 @@ class AsyncORM(AsyncEngine):
             res.append(result[0])
         return res
 
+
 engine = AsyncORM(f"sqlite+aiosqlite:///{config.sqlite_host}")
 Base = engine.Base
-

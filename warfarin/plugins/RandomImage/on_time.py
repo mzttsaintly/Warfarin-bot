@@ -49,7 +49,6 @@ async def count_image_one_day(bot: Bot, event):
     await send_count.finish(msg)
 
 
-
 # @scheduler.scheduled_job("cron", minute="*", day="*", id="setu")
 
 

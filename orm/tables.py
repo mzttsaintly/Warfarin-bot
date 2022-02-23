@@ -25,3 +25,9 @@ class ImageInformation(Base):
     hair = Column(String(32))
     tags = Column(String(32))
     ero = Column(Integer)
+
+    class KeyWord(Base):
+        __tablename__ = "KeyWord"
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        alias = Column(String(32))
+        direction = Column(String(32))

@@ -3,6 +3,9 @@
 目前仍在开发中，代码可能会有大幅度变动，请知悉
 采用mirai-api-http 2.x 作为适配器
 
+## TO DO
+* 通过图片标签发送图片
+
 ## How to start
 
 1. generate project using `nb create` .
