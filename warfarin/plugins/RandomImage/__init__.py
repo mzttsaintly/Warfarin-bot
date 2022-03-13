@@ -10,8 +10,8 @@ from orm.tables import Setu
 
 driver: nonebot.Driver = nonebot.get_driver()
 
-send_Setu = on_regex(r"hso", priority=1)
-send_SFW = on_regex(r"sfw", priority=1)
+send_Setu = on_regex(r"hso", priority=5)
+send_SFW = on_regex(r"sfw", priority=5)
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
 

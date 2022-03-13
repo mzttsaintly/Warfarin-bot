@@ -10,7 +10,7 @@ from nonebot.plugin import on_keyword
 
 driver: nonebot.Driver = nonebot.get_driver()
 
-keyword = on_keyword({"求签", "电子观音"}, priority=1)
+keyword = on_keyword({"求签", "电子观音"}, priority=5)
 
 
 @keyword.handle()

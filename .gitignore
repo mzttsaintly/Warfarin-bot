@@ -122,6 +122,7 @@ venv.bak/
 
 warfarin.db
 /data
+anime_list/
 
 # Spyder project settings
 .spyderproject

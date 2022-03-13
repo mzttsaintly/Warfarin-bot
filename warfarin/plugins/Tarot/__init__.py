@@ -5,7 +5,7 @@ import random
 from nonebot import on_keyword, logger
 from nonebot.adapters.mirai2 import MessageSegment, Bot, Event
 
-tarot = on_keyword({"塔罗牌"}, priority=1)
+tarot = on_keyword({"塔罗牌"}, priority=5)
 
 
 @tarot.handle()
