@@ -6,7 +6,6 @@ from pathlib import Path
 
 from nonebot.permission import SUPERUSER
 from nonebot import on_command, on_regex, logger, require
-from nonebot.rule import to_me
 from nonebot.adapters import Bot, Event
 
 path = Path(__file__).parent
