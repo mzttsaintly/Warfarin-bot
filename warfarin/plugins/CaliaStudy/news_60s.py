@@ -2,11 +2,10 @@ import nonebot
 import aiohttp
 from nonebot.adapters.mirai2 import MessageSegment
 from nonebot import on_regex, require, get_bot, logger
+from message_sender.message_sender import send_group_msg
 
 
-bot_qq = nonebot.get_driver().config.mirai_qq[0]
-group = nonebot.get_driver().config.group[0]
-logger.debug(f"qq = {bot_qq}")
+group = nonebot.get_driver().config.group
 logger.debug(f"group = {group}")
 
 
@@ -22,14 +21,15 @@ async def send_news():
 
 @scheduler.scheduled_job("cron", hour="8", minute="5", day="*")
 async def daily_news():
-    bot = get_bot(str(bot_qq))
     msg = await get_news()
-    await bot.send_group_message(message_chain=[msg], target=int(group))
+    for _ in group:
+        await send_group_msg(msg, int(_))
 
 
 async def get_news():
     try:
-        url = "https://api.iyk0.com/60s"
+        # url = "https://api.iyk0.com/60s"
+        url = "https://api.2xb.cn/zaob"
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as res_session:
                 res = await res_session.json()
@@ -37,7 +37,8 @@ async def get_news():
         pic_ti = MessageSegment.image(url=lst)
         return pic_ti
     except:
-        url = "https://api.2xb.cn/zaob"
+        # url = "https://api.2xb.cn/zaob"
+        url = "https://api.iyk0.com/60s"
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as res_session:
                 res = await res_session.json()
