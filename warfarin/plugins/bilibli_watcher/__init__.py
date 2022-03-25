@@ -34,7 +34,7 @@ async def follow_up(event: Event):
     uid = event.get_plaintext().split()
     logger.debug(f"收到指令：{uid}")
     await follow_up_modify(uid[1])
-    await follow_up.finish(f"已关注{uid[1]}")
+    # await follow_up.finish(f"已关注{uid[1]}")
 
 
 unfollow_up = on_command("unfollow-up", aliases={"取关up"}, block=True)
@@ -52,7 +52,7 @@ async def unfollow_up(event: Event):
     """
     uid = event.get_plaintext().split()
     logger.debug(f"收到指令：{uid}")
-    await unfollow_up_modify(uid[1])
+    # await unfollow_up_modify(uid[1])
 
 manual_check = on_command("check_update", aliases={"查询更新"}, block=True)
 

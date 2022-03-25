@@ -20,7 +20,7 @@ header = {
 }
 
 
-def get_latest_video(uid: str, last_post_time: int) -> tuple[bool, str, str, str, str, int]:
+def get_latest_video(uid: str, last_post_time: int):
     """
     根据uid和时间戳查询用户是否有视频更新
 
@@ -52,7 +52,7 @@ def get_latest_video(uid: str, last_post_time: int) -> tuple[bool, str, str, str
         return False, title, bvid, length, pic, post_time
 
 
-def init_up_info(uid: str) -> Tuple[str, int]:
+def init_up_info(uid: str):
     """
     根据uid获取up名字和最后更新时间戳
 
@@ -92,13 +92,15 @@ async def follow_up_modify(uid: str):
                 up_info = json.load(f)
             except Exception as e:
                 logger.debug(e)
-                up_info = {"0": ["none", 0]}
+                up_info = {}
             logger.debug("正在读取文件")
             if uid in up_info:
                 logger.debug("up已存在于关注列表")
             else:
                 name, latest_update = init_up_info(uid)
                 up_info[uid] = [name, latest_update]
+                f.seek(0)
+                f.truncate()
                 json.dump(up_info, f, ensure_ascii=False)
                 logger.debug("已添加up")
     else:
@@ -130,6 +132,8 @@ async def unfollow_up_modify(uid: str):
             if uid in up_info:
                 logger.debug("up已存在于关注列表")
                 up_info.pop(uid)
+                f.seek(0)
+                f.truncate()
                 json.dump(up_info, f, ensure_ascii=False)
             else:
                 logger.debug("此up不在关注列表中")
