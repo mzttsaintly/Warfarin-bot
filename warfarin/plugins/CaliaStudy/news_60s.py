@@ -28,7 +28,6 @@ async def daily_news():
 
 async def get_news():
     try:
-        # url = "https://api.iyk0.com/60s"
         url = "https://api.2xb.cn/zaob"
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as res_session:
@@ -37,7 +36,6 @@ async def get_news():
         pic_ti = MessageSegment.image(url=lst)
         return pic_ti
     except:
-        # url = "https://api.2xb.cn/zaob"
         url = "https://api.iyk0.com/60s"
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as res_session:
@@ -45,14 +43,6 @@ async def get_news():
         lst = res['imageUrl']
         pic_ti = MessageSegment.image(url=lst)
         return pic_ti
-        # url = "https://api.2xb.cn/zaob"  # 备用网址
-        # resp = requests.get(url)
-        # resp = resp.text
-        # resp = remove_unprintable_chars(resp)
-        # ret_data = json.loads(resp)
-        # lst = ret_data['imageUrl']
-        # pic_ti1 = MessageSegment.image(url=lst)
-        # return pic_ti1
 
 
 def remove_unprintable_chars(s):
