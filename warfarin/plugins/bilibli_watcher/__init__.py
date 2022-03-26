@@ -7,17 +7,18 @@ import nonebot
 from nonebot import get_driver, on_command, on_message, require, permission
 from nonebot import logger
 from nonebot.exception import ParserExit, FinishedException
-from message_sender.message_sender import send_group_msg
+from message_sender.message_sender import send_group_msgchain
+from nonebot.permission import SUPERUSER
 
-from nonebot.adapters.mirai2 import MessageSegment, Event
+from nonebot.adapters.mirai2 import MessageSegment, Event, MessageChain
 
-from .vedio_info import follow_up_modify, unfollow_up_modify, check_ups_update
+from .vedio_info import follow_up_modify, unfollow_up_modify, check_ups_update, check_list
 
 path = Path(__file__).parent
 group = nonebot.get_driver().config.group
 scheduler = require("nonebot_plugin_apscheduler").scheduler
 
-follow_up = on_command("followup", aliases={"关注up"}, block=True)
+follow_up = on_command("followup", aliases={"关注up"}, permission=SUPERUSER, block=True)
 
 
 @follow_up.handle()
@@ -37,7 +38,7 @@ async def follow_up(event: Event):
     # await follow_up.finish(f"已关注{uid[1]}")
 
 
-unfollow_up = on_command("unfollow-up", aliases={"取关up"}, block=True)
+unfollow_up = on_command("unfollow-up", aliases={"取关up"}, permission=SUPERUSER, block=True)
 
 
 @unfollow_up.handle()
@@ -52,7 +53,7 @@ async def unfollow_up(event: Event):
     """
     uid = event.get_plaintext().split()
     logger.debug(f"收到指令：{uid}")
-    # await unfollow_up_modify(uid[1])
+    await unfollow_up_modify(uid[1])
 
 manual_check = on_command("check_update", aliases={"查询更新"}, block=True)
 
@@ -71,6 +72,12 @@ async def manual_check_update(event: Event):
 
 @scheduler.scheduled_job("cron", minute="*/3", day="*")
 async def auto_check_update():
+    """
+    定时查看已关注up是否更新
+
+    Returns: None
+
+    """
     up_path = str(path) + os.sep + "data" + os.sep + "up" + os.sep + "up.json"
     wait_list = []
     with open(up_path, "r+", encoding='UTF-8') as f:
@@ -81,8 +88,23 @@ async def auto_check_update():
     for i in wait_list:
         res = await check_ups_update(i)
         if res[0]:
-            msg = [MessageSegment.plain(res[1]), MessageSegment.image(url=res[2])]
+            msg = MessageChain(MessageSegment.plain(res[1]))
+            msg.append(MessageSegment.image(url=res[2]))
             for j in group:
-                await send_group_msg(msg, int(j))
+                logger.debug(f"msg={msg},group={j}")
+                await send_group_msgchain(msg, int(j))
         else:
             pass
+
+
+check_up_list = on_command("check_list", aliases={"查询关注"}, block=True)
+
+
+@check_up_list.handle()
+async def check_up_lists():
+    """
+    查看当前关注的列表
+    Returns:
+
+    """
+    await check_up_list.finish(str(await check_list()))

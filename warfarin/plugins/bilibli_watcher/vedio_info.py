@@ -3,7 +3,7 @@ import json
 from typing import Tuple
 import os
 from pathlib import Path
-from nonebot.exception import NetworkError, IgnoredException, ParserExit
+from nonebot.exception import NetworkError, IgnoredException, ParserExit, FinishedException
 
 from nonebot import logger
 
@@ -154,7 +154,7 @@ async def check_ups_update(uid: str) -> Tuple[bool, str, str]:
 
     """
     if not uid.isdigit():
-        raise ParserExit
+        uid = await check_watch(uid)
     up_path = str(path) + os.sep + "data" + os.sep + "up" + os.sep + "up.json"
     with open(up_path, "r+", encoding='UTF-8') as f:
         up_info = json.load(f)
@@ -164,16 +164,51 @@ async def check_ups_update(uid: str) -> Tuple[bool, str, str]:
         logger.debug(f"查询对象为{up_name}")
         latest_update = int(up_info[uid][1])
         logger.debug(f"上次更新时间戳为{latest_update}")
-    res = get_latest_video(uid, latest_update)
-    title = res[1]
-    bvid = res[2]
-    time = res[3]
-    pic_url = res[4]
-    post_time = res[5]
-    if res[0]:
-        up_info[uid][1] = int(post_time)
-        msg = f"[B站动态]\n{up_name} 更新了\n标题：{title}\n时长：{time}\n链接：https://www.bilibili.com/video/{bvid}"
-        return True, msg, pic_url
-    else:
-        msg = f"{up_name} 尚未更新\n最后更新视频标题：{title}\n时长：{time}\n链接：https://www.bilibili.com/video/{bvid}"
-        return False, msg, pic_url
+        res = get_latest_video(uid, latest_update)
+        title = res[1]
+        bvid = res[2]
+        time = res[3]
+        pic_url = res[4]
+        post_time = res[5]
+        if res[0]:
+            up_info[uid][1] = int(post_time)
+            f.seek(0)
+            f.truncate()
+            json.dump(up_info, f, ensure_ascii=False)
+            msg = f"[B站动态]\n{up_name} 更新了\n标题：{title}\n时长：{time}\n链接：https://www.bilibili.com/video/{bvid}"
+            return True, msg, pic_url
+        else:
+            msg = f"{up_name} 尚未更新\n最后更新视频标题：{title}\n时长：{time}\n链接：https://www.bilibili.com/video/{bvid}"
+            return False, msg, pic_url
+
+
+async def check_watch(name: str):
+    """
+    根据关注列表中的名字查询uid
+    Args:
+        name: 所关注up的名称
+
+    Returns: 列表中对应的uid
+
+    """
+    up_path = str(path) + os.sep + "data" + os.sep + "up" + os.sep + "up.json"
+    with open(up_path, "r", encoding='UTF-8') as f:
+        up_info = json.load(f)
+        for key in up_info:
+            if up_info[key][0] == name:
+                return key
+        raise FinishedException
+
+
+async def check_list():
+    """
+    返回当前关注的所有up
+
+    Returns: 一个包含当前关注列表中所有up的dict
+
+    """
+    up_path = str(path) + os.sep + "data" + os.sep + "up" + os.sep + "up.json"
+    with open(up_path, "r", encoding='UTF-8') as f:
+        up_info = json.load(f)
+    return up_info
+

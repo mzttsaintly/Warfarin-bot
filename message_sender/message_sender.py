@@ -19,6 +19,20 @@ async def send_group_msg(msg, group_id: int):
     await bot.send_group_message(message_chain=[msg], target=group_id)
 
 
+async def send_group_msgchain(msg, group_id: int):
+    """
+
+    Args:
+        msg:
+        group_id:
+
+    Returns:
+
+    """
+    bot = get_bot(str(bot_qq))
+    await bot.send_group_message(message_chain=msg, target=group_id)
+
+
 async def send_friend_msg(msg, friend_id: int):
     """
     将消息发送至指定好友
