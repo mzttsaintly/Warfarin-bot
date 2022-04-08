@@ -50,7 +50,7 @@ def is_month(time: str) -> bool:
 
 def is_year(time: str) -> bool:
     """
-    是否在这个月
+    是否在这一年
     使用: is_year(time)
     """
     if (datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S')).year == datetime.datetime.now().year:
