@@ -23,8 +23,8 @@ async def send_group_msgchain(msg, group_id: int):
     """
 
     Args:
-        msg:
-        group_id:
+        msg: 发送的内容(Messagechain)
+        group_id: 需要发送至的群组id
 
     Returns:
 
@@ -38,7 +38,7 @@ async def send_friend_msg(msg, friend_id: int):
     将消息发送至指定好友
 
     Args:
-        msg: 发送的内容(str, MessageSegment)
+        msg: 发送的内容(str, MessageSegment),不能是MessageChain
         friend_id: 需要发送至的好友qq号
 
     Returns:
