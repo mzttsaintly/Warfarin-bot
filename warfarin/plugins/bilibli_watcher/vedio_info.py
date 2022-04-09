@@ -10,6 +10,10 @@ from nonebot import logger
 path = Path(__file__).parent
 if not os.path.isfile(str(path) + os.sep + "data" + os.sep + "up" + os.sep + "up.json"):
     logger.info("还没有关注的up喔")
+    try:
+        os.makedirs(str(path) + os.sep + "data" + os.sep + "up")
+    except FileExistsError:
+        pass
 else:
     logger.info("up列表加载成功!")
 

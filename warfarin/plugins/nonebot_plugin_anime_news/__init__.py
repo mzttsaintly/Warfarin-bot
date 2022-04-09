@@ -39,7 +39,7 @@ async def handle():
     await today_anime.finish(msg)
 
 
-@scheduler.scheduled_job("cron", minute="30", hour="22", day="*")
+@scheduler.scheduled_job("cron", minute="22", hour="22", day="*")
 async def auto_send_anime():
     """
     定时向设定的群聊发送当日新番列表
