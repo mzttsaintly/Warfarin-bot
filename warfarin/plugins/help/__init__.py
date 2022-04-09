@@ -9,7 +9,10 @@ helper_dict = {"今日新闻": "获取今日的60s新闻（每日8点05分也会
                "/get season": "获得本季度新番列表(以长图片形式，用时较长）",
                "(地名)天气": "获取地点天气预报",
                "塔罗牌": "随机抽取塔罗牌",
-               "hso": "能获得一张图片吧大概"}
+               "hso": "能获得一张图片吧大概",
+               "/followup {uid}": "关注up(后接uid（仅管理员可用）)",
+               "/unfollow-up {uid}": "取注up(后接uid（仅管理员可用）)",
+               "/check_list": "查询关注的up主列表"}
 bot_helper = on_command('help', aliases={"帮助"}, priority=5, block=True)
 
 
