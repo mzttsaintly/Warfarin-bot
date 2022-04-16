@@ -16,7 +16,7 @@ def get_to_day_anime():
     """
     path = Path(__file__).parent
     data_file = str(path) + os.sep + "anime_list" + os.sep + "data.json"
-    to_day_anime = ""
+    to_day_anime = "...落叶捎来讯息：\n现在是'下载时代'.\n想看新番的话，去资源站或者番剧出差\n今日更新：\n"
     with open(data_file, 'r', encoding='UTF-8') as f:
         info_data = json.load(f)
         try:
@@ -26,7 +26,7 @@ def get_to_day_anime():
                 if is_today(time):
                     to_day_anime = to_day_anime + f"《{anime['headline'][40:-4]}》\n播出时间: {time}" + "\n\n"
         except:
-            to_day_anime = f"今天没有番剧更新，明天再来问吧..."
+            to_day_anime = f"...落叶捎来讯息：\n现在是'下载时代'.\n想看新番的话，去资源站或者番剧出差\n但今天没有番剧更新，明天再来看吧..."
     return to_day_anime
 
 
