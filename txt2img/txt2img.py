@@ -149,15 +149,7 @@ class Txt2Img:
                 fill=text_color,
                 spacing=self.lrc_line_space,
             )
-
-        # return self.save_img(out_img)
         return self.img2b64(out_img)
-
-    # def save_img(self, out_img):
-    #     """save out_img object to local disk"""
-    #     img_save_path = f"{self.save_dir}/{self.out_img_name}"
-    #     out_img.save(img_save_path)
-    #     return img_save_path
 
     def img2b64(self, out_img) -> str:
         """ image to base64 """

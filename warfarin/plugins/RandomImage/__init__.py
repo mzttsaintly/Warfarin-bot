@@ -4,7 +4,6 @@ from nonebot.plugin import on_regex
 from nonebot.adapters.mirai2 import MessageSegment, Bot, Event
 
 from .get_image import *
-# from .on_time import *
 from orm.sqlite import *
 from orm.tables import Setu
 

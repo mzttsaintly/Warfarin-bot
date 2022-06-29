@@ -1,10 +1,9 @@
 import os
 import json
 from pathlib import Path
-import re
 
 import nonebot
-from nonebot import get_driver, on_command, on_message, require, permission
+from nonebot import on_command, require
 from nonebot import logger
 from nonebot.exception import ParserExit, FinishedException
 from message_sender.message_sender import send_group_msgchain
