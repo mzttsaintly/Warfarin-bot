@@ -1,5 +1,6 @@
+import time
 from nonebot import logger, on_message
-from nonebot.adapters.mirai2 import MessageSegment, Bot, Event
+from nonebot.adapters.mirai2 import MessageSegment, Bot, Event, GroupMessage
 
 # test_message = on_message(priority=5)
 
@@ -27,4 +28,15 @@ async def testapi(bot: Bot, event: Event):
     message_type = event.get_type()
     logger.debug(f"message_type = {message_type}")
 
-    await test_message.finish(None)
+    message_dict = event.normalize_dict()
+    message_time = message_dict['source']['time']
+    time_tup = time.strptime(message_time, "%Y-%m-%dT%H:%M:%S+00:00")
+    logger.debug(f"message_time = {message_time}")
+    logger.debug(f"时间数组为 {time_tup}")
+    logger.debug(f"时间戳为 {time.mktime(time_tup)}")
+
+    if isinstance(event, GroupMessage):
+        message_group_id = event.normalize_dict()["sender"]["group"]["id"]
+        logger.debug(f"group_id = {message_group_id}")
+
+    # await test_message.finish(None)
