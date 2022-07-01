@@ -2,7 +2,7 @@ import asyncio
 import random
 import time
 from re import I, sub
-from message_sender.message_sender import send_group_msgchain
+from message_sender.message_sender import send_group_msgchain, send_group_msg
 from nonebot import on_command, on_regex, Bot
 # from nonebot.adapters.onebot.v11 import (GROUP, PRIVATE_FRIEND, Bot,
 #                                          GroupMessageEvent, Message,
@@ -43,8 +43,9 @@ async def _(bot: Bot, event: MessageEvent, state: T_State = State()):
     # 担心被风控盯上 限制群聊中单次发送的图片数量
     if num > 1 and isinstance(event, GroupMessage):
         num = 1
-        await send_group_msgchain([MessageSegment.plain("受风控影响 群组内每次请求上限为1 但私聊就没问题")],
-                                  event.normalize_dict()["sender"]["group"]["id"])
+        await setu.send(MessageSegment.plain("受风控影响 群组内每次请求上限为1 但私聊就没问题"))
+        # await send_group_msgchain([MessageSegment.plain("受风控影响 群组内每次请求上限为1 但私聊就没问题")],
+        # event.normalize_dict()["sender"]["group"]["id"])
     # 色图图片质量, 如果num为3-6质量为70,如果num为7-max质量为50,其余为95(图片质量太高发起来太费时间了)
     # 注:quality值95为原图
     if 3 <= num <= 6:
@@ -117,7 +118,8 @@ async def _(bot: Bot, event: MessageEvent, state: T_State = State()):
             if isinstance(event, FriendMessage):
                 # 私聊直接发送
                 for msg in message_list:
-                    setu_msg_id.append((await setu.send(msg)))  # 我超这串代码好丑啊
+                    await setu.send(msg)
+                    # setu_msg_id.append((await setu.send(msg)))  # 我超这串代码好丑啊
             elif isinstance(event, GroupMessage):
                 # 群聊以转发消息的方式发送
                 # msgs = [to_json(msg, "setu-bot", bot.self_id)
@@ -125,7 +127,8 @@ async def _(bot: Bot, event: MessageEvent, state: T_State = State()):
 
                 # 改编注：没找到mah要怎么发送转发消息 还是直接发送吧 但我在前面限制了群聊发送的数量
                 for msgs in message_list:
-                    await send_group_msgchain(msgs, int(event.normalize_dict()["sender"]["group"]["id"]))
+                    await send_group_msg(msgs, int(event.normalize_dict()["sender"]["group"]["id"]))
+                    # await setu.send(msgs)
                 # setu_msg_id.append(
                 #     (await bot.call_api('send_group_forward_msg',
                 #                         group_id=event.normalize_dict()["sender"]["group"]["id"],
