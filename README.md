@@ -18,7 +18,7 @@
 和[nonebot_plugin_analysis_bilibili](https://github.com/mengshouer/nonebot_plugin_analysis_bilibili)。
 感谢两位的代码。  
 * 适配mah的涩图插件，来自于[youth-version-of-setu4](https://github.com/Special-Week/youth-version-of-setu4)。
-我喜欢这个插件的实现方式。
+我喜欢这个插件的实现方式。十分感谢作者详尽的注释，让适配得以轻松进行。
 但在适配mah的同时根据自身使用情况做了一些小小的改动。
 
 ## TO DO
