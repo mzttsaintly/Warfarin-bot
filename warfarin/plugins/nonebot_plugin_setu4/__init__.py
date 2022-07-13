@@ -15,6 +15,7 @@ from nonebot.params import CommandArg, State
 from nonebot.permission import SUPERUSER
 from nonebot.typing import T_State
 from .get_data import get_setu
+from .get_net_image import lolicon
 from .setu_message import setu_sendcd, setu_sendmessage
 from .config import *
 
@@ -96,7 +97,12 @@ async def _(bot: Bot, event: MessageEvent, state: T_State = State()):
         time_stamp = time.mktime(time_tup)
         cd_dir.update({qid: time_stamp})
         # data是数组套娃, 数组中的每个元素内容为: [图片, 信息, True/False, url]
-        data = await get_setu(key, r18, num, quality)
+        try:
+            # 尝试使用网站api
+            data = await lolicon(key, r18, num, quality)
+        except:
+            logger.info("网页api调用失败，更换为本地数据库")
+            data = await get_setu(key, r18, num, quality)
 
         # 发送的消息列表
         message_list = []
