@@ -9,7 +9,7 @@ from nonebot import on_command, on_regex, Bot
 #                                          MessageEvent, MessageSegment,
 #                                          PrivateMessageEvent)
 from nonebot.adapters.mirai2 import MessageEvent, MessageSegment, GroupMessage, FriendMessage, MessageChain
-from nonebot.exception import ActionFailed
+from nonebot.exception import ActionFailed, NetworkError
 from nonebot.log import logger
 from nonebot.params import CommandArg, State
 from nonebot.permission import SUPERUSER
@@ -100,7 +100,7 @@ async def _(bot: Bot, event: MessageEvent, state: T_State = State()):
         try:
             # 尝试使用网站api
             data = await lolicon(key, r18, num, quality)
-        except:
+        except (NetworkError, AttributeError):
             logger.info("网页api调用失败，更换为本地数据库")
             data = await get_setu(key, r18, num, quality)
 
