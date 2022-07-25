@@ -100,7 +100,10 @@ async def _(bot: Bot, event: MessageEvent, state: T_State = State()):
         try:
             # 尝试使用网站api
             data = await lolicon(key, r18, num, quality)
-        except (NetworkError, AttributeError):
+        except NetworkError:
+            logger.info("网页api调用失败，更换为本地数据库")
+            data = await get_setu(key, r18, num, quality)
+        except ActionFailed:
             logger.info("网页api调用失败，更换为本地数据库")
             data = await get_setu(key, r18, num, quality)
 

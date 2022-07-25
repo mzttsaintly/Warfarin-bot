@@ -26,9 +26,14 @@ async def get_net_image(key="", r18=False, num=1):
     Returns:图片信息列表
 
     """
-    url = f"https://api.lolicon.app/setu/v2?r18={1 if r18 else 0}&tag={key}&num={num}"
+    # url = f"https://api.lolicon.app/setu/v2?r18={1 if r18 else 0}&tag={key}&num={num}"
+
+    url = "https://api.lolicon.app/setu/v2"
+    r18_flag = 1 if r18 else 0
+    key_list = key.split()
+    params = {'tag': key_list, 'r18': r18_flag, 'num': num}
     async with aiohttp.ClientSession() as session:
-        async with session.get(url=url) as resp:
+        async with session.get(url=url, params=params) as resp:
             result = await resp.json()
     logger.info(result)
     return result["data"]
