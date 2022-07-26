@@ -26,10 +26,12 @@ async def _(event: MessageEvent):
         await share_av_sort_url.finish(msg)
     n = n.extract_plain_text()
     # print("after extract_text = ", n)
-    if av_id := re.match(r"av[*=\s]?(\d*)?", n):
+    # 匹配av号
+    if av_id := re.search(r"av[*=\s]?(\d*)", n):
         video_info = await get_video_info(av_id[1])
-    elif bv_id := re.match(r"BV[*=\s]?(.*)?", n):
-        av_id = await bv_to_av(bv_id[0])
+        # 匹配网页连接中的BV号
+    elif bv_id := re.search(r"BV[*=\s]?(\w*)", n):
+        av_id = await bv_to_av("BV" + bv_id[1])
         video_info = await get_video_info(av_id)
     else:
         raise FinishedException

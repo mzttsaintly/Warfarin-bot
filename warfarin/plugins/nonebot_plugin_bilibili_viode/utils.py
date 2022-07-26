@@ -42,8 +42,7 @@ async def get_share_sort_url(av_id: str):
 # 传入参数：AV号或者BV号
 # 返回值：视频信息类
 async def get_video_info(av_id: str):
-    if av_id.startswith("BV"):
-        av_id = await bv_to_av(av_id)
+
     shareUrl = await get_share_sort_url(av_id)
     apiUrl = "http://api.bilibili.com/x/web-interface/view?aid=" + av_id
     async with AsyncClient() as client:
