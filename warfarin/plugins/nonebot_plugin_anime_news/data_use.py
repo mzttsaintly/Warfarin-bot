@@ -16,7 +16,7 @@ def get_to_day_anime():
     """
     path = Path(__file__).parent
     data_file = str(path) + os.sep + "anime_list" + os.sep + "data.json"
-    to_day_anime = "...落叶捎来讯息：\n现在是'下载时代'.\n想看新番的话，去资源站或者番剧出差\n今日更新：\n"
+    to_day_anime = "...落叶捎来讯息：\n现在是'下载时代'.\n想看新番的话，去资源站或者番剧出差\n昨晚至明早更新的番剧有：\n"
     with open(data_file, 'r', encoding='UTF-8') as f:
         info_data = json.load(f)
         try:

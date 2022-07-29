@@ -24,13 +24,24 @@ def get_time_list() -> list:
     return [a, b, c, d, e, f, g, h]
 
 
+def today_anime_time() -> list:
+    start_time = datetime.datetime.strptime(str(datetime.datetime.now().date() + datetime.timedelta(days=-1)) + '16:00',
+                                            '%Y-%m-%d%H:%M')
+    end_time = datetime.datetime.strptime(str(datetime.datetime.now().date() + datetime.timedelta(days=1)) + '8:00',
+                                          '%Y-%m-%d%H:%M')
+    return [start_time, end_time]
+
+
 def is_today(time) -> bool:
     """
     是否是今日
     使用: is_time(time)
     """
-    time_list = get_time_list()
-    if time_list[0] < time < time_list[7]:
+    # time_list = get_time_list()
+    # 换成从前一天16时到后一天8时的时间段
+    time_list = today_anime_time()
+    # if time_list[0] < time < time_list[7]:
+    if time_list[0] < time < time_list[1]:
         return True
     else:
         return False
