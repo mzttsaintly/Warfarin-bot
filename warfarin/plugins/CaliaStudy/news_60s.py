@@ -1,6 +1,6 @@
 import nonebot
 import aiohttp
-from nonebot.adapters.mirai2 import MessageSegment
+from nonebot.adapters.mirai2 import MessageSegment, MessageChain
 from nonebot import on_regex, require, get_bot, logger
 from message_sender.message_sender import send_group_msg
 

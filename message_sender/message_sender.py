@@ -22,6 +22,8 @@ async def send_group_msg(msg, group_id: int):
         await bot.send_group_message(message_chain=[msg], target=group_id)
     elif isinstance(msg, MessageChain):
         await bot.send_group_message(message_chain=msg, target=group_id)
+    elif isinstance(msg, list):
+        await bot.send_group_message(message_chain=msg, target=group_id)
     elif isinstance(msg, str):
         plain = MessageSegment.plain(text=msg)
         await bot.send_group_message(message_chain=[plain], target=group_id)
@@ -55,4 +57,14 @@ async def send_friend_msg(msg, friend_id: int):
 
     """
     bot = get_bot(str(bot_qq))
-    await bot.send_friend_message(target=friend_id, message_chain=[msg])
+    if isinstance(msg, MessageSegment):
+        await bot.send_friend_message(target=friend_id, message_chain=[msg])
+    elif isinstance(msg, MessageChain):
+        await bot.send_friend_message(target=friend_id, message_chain=msg)
+    elif isinstance(msg, list):
+        await bot.send_friend_message(target=friend_id, message_chain=msg)
+    elif isinstance(msg, str):
+        plain = MessageSegment.plain(text=msg)
+        await bot.send_friend_message(target=friend_id, message_chain=[plain])
+    else:
+        raise TypeMisMatch
