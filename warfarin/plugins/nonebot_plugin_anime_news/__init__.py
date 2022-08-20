@@ -1,5 +1,5 @@
 from .data_use import get_to_day_anime, get_season_anime_list
-from .get import get_data, get_new_season_data
+from .get import get_data, get_new_season_data, get_data_from_bgm
 
 import os
 from pathlib import Path
