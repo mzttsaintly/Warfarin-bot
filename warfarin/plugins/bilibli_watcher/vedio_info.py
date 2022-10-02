@@ -35,7 +35,8 @@ def get_latest_video(uid: str, last_post_time: int):
     Returns: 返回一个元组[是否更新, 标题，bv号，视频长度，封面的链接， 发布时间戳]
 
     """
-    response = requests.get(url=baseUrl.format(uid), headers=header)
+    get_cookie = requests.get(url="https://www.bilibili.com")
+    response = requests.get(url=baseUrl.format(uid), headers=header, cookies=get_cookie.cookies)
     if response.status_code == 200:
         pass
     else:
