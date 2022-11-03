@@ -148,6 +148,7 @@ dmypy.json
 # test
 plugin-test
 plugin-test/
+error.log
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 /warfarin/plugins/bilibli_watcher/data/up/up.json
